@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
@@ -13,7 +14,34 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
-      background-color: red;
+      background-color: midnightblue;
+    }
+
+    #confirm {
+      background-color: orangered;
+      margin: auto;
+      width: 45vw;
+      height: 45vh;
+      border: none;
+      color: black;
+      text-align: center;
+      text-decoration: none;
+      font-size: 10vh;
+      transition: all 0.3s ease-out;
+    }
+
+    .active{
+      display: none;
+    }
+
+    #confirm:hover{
+      background-color: blue;
+      color: white;
+    }
+
+    #confirm:active{
+      background-color: lawngreen;
+      color: black;
     }
   </style>
   <script src="lib/p5.min.js"></script>
@@ -22,11 +50,13 @@
   <script src="lib/p5.gui.js"></script>
   <script src="globals.js"></script>
   <script src="boss.js"></script>
+  <script src="star.js"></script>
   <!-- <script src="boss-sketch.js"></script> -->
-  <script src="background.js"></script>
+  <script src="main.js"></script>
   <!-- <script src="sketch.js"></script> -->
 </head>
 
 <body>
 </body>
+
 </html>

@@ -52,11 +52,3 @@ function Bullet(ix, iy, ttc, tti, im, traj, acc) {
     };
 
 }
-
-function keyPressed() {
-    if (key == ' ') {
-        boss.shoot();
-    } else if (keyCode == CONTROL) {
-        shot = false;
-    }
-}
