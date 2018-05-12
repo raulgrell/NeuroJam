@@ -3,9 +3,10 @@ function Ship(x, y, radius) {
     this.y = y;
     this.lifetime = 0;
     this.shield = false;
+    this.rate = 10;
 
     this.display = function() {
-        var r = radius * Math.sin(this.lifetime * 10);
+        var r = radius * Math.sin(this.lifetime * this.rate);
         push();
         fill(0, 0, 127);
         ellipse(this.x, this.y, r, r);

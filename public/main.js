@@ -1,8 +1,9 @@
 //InitialValues;
 
-var gui;
+var gui, gui2, guiTest;
 var phase = 2;
 var button;
+var loaded = false;
 
 var starField = [];
 
@@ -19,29 +20,42 @@ function setup() {
     setFrameRate(60);
     noStroke();
 
-    // GUI
-    sliderRange(0, 90, 1);
-    gui = createGui('Label');
-    gui.addGlobals('scroll', 'maxParralax');
-
-    // Stars
-    starField = makeStarField(maxNumberofStars);
-
     // Ship
-    ship = new Ship(50, height / 2, 50);
+    ship = new Ship(50, height / 2, 120);
 
     // Boss
     boss = new Boss(
-        ship,
         width - 100,
         height / 2,
         0.1 * height
     );
 
-    currentMillis = millis();
+    // GUI
+    gui2 = createGui('Stars', 60, 60);
+    gui2.addGlobals('scroll', 'parralaxMax', 'parralaxMin', 'starSizeMax','starSizeMin');
+
+
+    gui = createGui('Ship', 600, 60);
+    
+    sliderRange(50, width, 1);
+    gui.addObject(ship, 'x');
+
+    sliderRange(1, 10, 1);
+    gui.addObject(ship, 'rate');
+
+
+    guiTest = createGui('Bullet', 60, 400);
+    sliderRange(1, 5, 0.5);
+    guiTest.addObject(defaultBullet, 'ttc');
+    sliderRange(0.1, 0.7, 0.05);    
+    guiTest.addObject(defaultBullet, 'tti');
+
     button = createButton('Confirm Parameters').id('confirm');
     button.position(window.innerWidth / 2, window.innerHeight / 2);
     button.mousePressed(startConditioning);
+
+    currentMillis = millis();
+
 };
 
 function startConditioning() {
@@ -62,24 +76,32 @@ function draw() {
             break;
         case '1':
             //Conditioning
+            if(!loaded){
+                starField = makeStarField(maxNumberofStars);
+                loaded = true;
+            }
             starField.forEach(function (x, i) {
-                x.display()
-                    .update()
-                    .repeat();
+                x.display().update().repeat();
             });
             break;
         case '2':
             //Test
             push();
             stroke(255);
-            line(50, 0, 50, 1000);
+            line(ship.x, 0, ship.x, height);
             pop();
 
             boss.display();
 
-            if (bullet) {
-                bullet.update(deltaTime);
-                bullet.display();
+            for (var i = bullets.length - 1; i >= 0; i--) {
+                bullets[i].update(deltaTime);
+                bullets[i].display();
+            }
+
+            for (var i = bullets.length - 1; i >= 0; i--) {
+                if(!bullets[i].alive) {
+                    bullets.splice(i, 1);
+                }
             }
 
             starField.forEach(function (x, i) {
@@ -107,5 +129,8 @@ function keyPressed() {
         boss.shoot();
     } else if (keyCode == CONTROL) {
         shot = false;
+    } else if (key >= '0' && key <= '9') {
+        phase = key;
+        console.log("phase: " + phase);
     }
 }
