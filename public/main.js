@@ -1,6 +1,8 @@
 //InitialValues;
 
 var gui;
+var phase = 2;
+var button;
 
 var starField = [];
 
@@ -13,7 +15,7 @@ var makeStarField = function (starcount) {
 };
 
 function setup() {
-    createCanvas(window.innerWidth, window.innerHeight);
+    createCanvas(windowWidth, windowHeight);
     setFrameRate(60);
     noStroke();
 
@@ -26,53 +28,74 @@ function setup() {
     starField = makeStarField(maxNumberofStars);
 
     // Ship
-    ship = new Ship(50, height/2, 50);
+    ship = new Ship(50, height / 2, 50);
 
     // Boss
     boss = new Boss(
-        window.innerWidth - 100,
-        window.innerHeight - 200,
-        0.1 * window.innerHeight,
-        10.0,
-        60.0
+        ship,
+        width - 100,
+        height / 2,
+        0.1 * height
     );
-    dist = boss.x - 50;
 
     currentMillis = millis();
+    button = createButton('Confirm Parameters').id('confirm');
+    button.position(window.innerWidth / 2, window.innerHeight / 2);
+    button.mousePressed(startConditioning);
 };
+
+function startConditioning() {
+    button.addClass("active");
+    phase = '1';
+}
 
 function draw() {
     var newMillis = millis();
     var deltaTime = (newMillis - currentMillis) / 1000;
     currentMillis = newMillis;
-    
+
     background(0);
 
-    push();
-    stroke(255);
-    line(50, 0, 50, 1000);
-    pop();
-    
-    boss.display();
+    switch (phase) {
+        case '0':
+            // Sliders
+            break;
+        case '1':
+            //Conditioning
+            starField.forEach(function (x, i) {
+                x.display()
+                    .update()
+                    .repeat();
+            });
+            break;
+        case '2':
+            //Test
+            push();
+            stroke(255);
+            line(50, 0, 50, 1000);
+            pop();
 
-    if (shot) {
-        bullet.update(deltaTime);
-        if ((millis() - bullet.iMillis) < (bullet.ttc * bullet.tti) * 1000)
-            bullet.display();
+            boss.display();
+
+            if (bullet) {
+                bullet.update(deltaTime);
+                bullet.display();
+            }
+
+            starField.forEach(function (x, i) {
+                x.display()
+                    .update()
+                    .repeat();
+            });
+
+            ship.update(deltaTime);
+            ship.display();
+            break;
     }
-
-    starField.forEach(function (x, i) {
-        x.display()
-            .update()
-            .repeat();
-    });
-
-    ship.update(deltaTime);
-    ship.display();
 };
 
 function mousePressed() {
-    if(mouseButton == LEFT) {
+    if (mouseButton == LEFT) {
         if (bullet) {
             ship.useShield();
         }

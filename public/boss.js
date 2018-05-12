@@ -1,4 +1,7 @@
-function Boss(x, y) {
+const bossWidth = 150;
+const bossHeight = 200;
+
+function Boss(x, y, ship) {
     this.x = x; // position, once it arrives to the screen
     this.y = y; // vertical position on the window
 
@@ -9,7 +12,7 @@ function Boss(x, y) {
         push();
         fill(0, 200, 10);
         rectMode(CENTER);
-        rect(x, y, 150, 300);
+        rect(x, y, bossWidth, bossHeight);
         pop();
 
         push();
@@ -18,27 +21,21 @@ function Boss(x, y) {
         pop();
     };
 
-
     this.shoot = function () {
-        console.log("lala");
-        shot = true;
         var bulletTTC = this.ttc[Math.floor(Math.random() * this.ttc.length)];
         var bulletTTI = this.tti[Math.floor(Math.random() * this.tti.length)];
-        console.log("TTC: " + bulletTTC + " TTI: " + bulletTTI);
-        bullet = new Bullet(this.x, this.y, bulletTTC, bulletTTI, millis(), 0, 0);
+        bullet = new Bullet(this.x, this.y, bulletTTC, bulletTTI, millis());
     };
 }
 
-function Bullet(ix, iy, ttc, tti, im, traj, acc) {
+function Bullet(ix, iy, ttc, tti, im) {
     //variables
     this.iMillis = im; //sets initial millis
     this.x = ix; //sets initial position
     this.y = iy; //sets initial position
     this.ttc = ttc; //time til collision
     this.tti = tti; // time til invisible
-    this.traj = traj;
-    this.acc = acc;
-    this.speed = (dist) / ttc;
+    this.speed = (ship.x - ix) / ttc;
 
     //methods
     this.update = function (deltaTime) {
@@ -46,11 +43,12 @@ function Bullet(ix, iy, ttc, tti, im, traj, acc) {
     };
 
     this.display = function () {
-        push();
-        fill(255);
-        ellipse(this.x, this.y, 25, 25);
-        pop();
+        if ((millis() - this.iMillis) < (this.ttc * this.tti) * 1000) {
+            push();
+            fill(255);
+            ellipse(this.x, this.y, 25, 25);
+            pop();
+        }
     };
 
 }
-

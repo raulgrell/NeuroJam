@@ -19,11 +19,6 @@ var bullet;
 var canvasHeight = 400;
 var CanvasWidth = 800;
 var shot = false;
-var dist;
 
 // Ship
 var ship;
-
-
-
-
