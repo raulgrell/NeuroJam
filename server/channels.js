@@ -3,6 +3,7 @@ module.exports = function(app) {
 
   app.on('connection', connection => {
     app.channel('anonymous').join(connection);
+    console.log('Anonymous user joined')
   });
 
   app.on('login', (authResult, { connection }) => {

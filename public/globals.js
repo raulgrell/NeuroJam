@@ -1,3 +1,4 @@
+var currentMillis;
 
 //Background Starfield
 var scroll = 5;
@@ -9,18 +10,20 @@ var maxNumberofStars = 500;
 //Each Star Values
 var starSizeMin = 5;
 var starSizeMax = 2;
-
 var parralaxMin = 3;
 var parralaxMax = 10;
 
 //Boss
-
 var boss;
 var bullet;
 var canvasHeight = 400;
 var CanvasWidth = 800;
 var shot = false;
 var dist;
+
+// Ship
+var ship;
+
 
 
 

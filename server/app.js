@@ -13,7 +13,6 @@ const socketio = require('@feathersjs/socketio');
 const authentication = require('./authentication');
 const services = require('./services');
 const channels = require('./channels');
-
 const appHooks = require('./app.hooks');
 
 const app = express(feathers());

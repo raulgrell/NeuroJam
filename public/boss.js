@@ -11,6 +11,7 @@ function Boss(x, y) {
         rectMode(CENTER);
         rect(x, y, 150, 300);
         pop();
+
         push();
         fill(0);
         ellipse(x, y, 5, 5);
@@ -52,3 +53,4 @@ function Bullet(ix, iy, ttc, tti, im, traj, acc) {
     };
 
 }
+

@@ -48,15 +48,26 @@
   <script src="lib/p5.dom.min.js"></script>
   <script src="lib/quicksettings.js"></script>
   <script src="lib/p5.gui.js"></script>
-  <script src="globals.js"></script>
-  <script src="boss.js"></script>
-  <script src="star.js"></script>
-  <!-- <script src="boss-sketch.js"></script> -->
-  <script src="main.js"></script>
-  <!-- <script src="sketch.js"></script> -->
+  <script src="lib/socketio.js"></script>
+  <script src="lib/feathers.js"></script>
+  <script>
+    var socket = io();
+    var client = feathers().configure(feathers.socketio(socket));
+    var dataService = client.service('data');
+    
+    // dataService.on('created', function(todo) {
+    //   console.log('Someone created a todo', todo);
+    // });
+
+  </script>
 </head>
 
 <body>
+  <script src="globals.js"></script>
+  <script src="star.js"></script>
+  <script src="ship.js"></script>
+  <script src="boss.js"></script>
+  <script src="main.js"></script>
 </body>
 
 </html>
