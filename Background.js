@@ -1,16 +1,20 @@
 
 var scrollSpeed = 5;
+var maxParralax = 4;
+var minParralax = 0;
+var maxStarSize = 5;
+var minStarSize = 2;
+var maxNumberofStars = 500;
 
-var sketch = function(p) {
-    p.pixelDensity(1);
-    
+
+var sketch = function(p) {    
     var starField = [];
     
     var Star = function(){
       this.vector = p.createVector(p.random(0,p.width), p.random(0,p.height));
-      this.size = p.random(2,5);
+      this.size = p.random(minStarSize,maxStarSize);
       this.opacity = p.ceil(p.random(15,160));
-      this.parallaxDistance = p.ceil(p.random(0,4));
+      this.parallaxDistance = p.ceil(p.random(minParralax,maxParralax));
       
       this.setVector = function(v)
       {
@@ -65,12 +69,12 @@ var sketch = function(p) {
     p.setup = function() {
       p.createCanvas(window.innerWidth, window.innerHeight);
       p.frameRate(50);
-      starField = makeStarField(500);
+      starField = makeStarField(maxNumberofStars);
       
     };
     
     p.draw = function() {
-      p.background(29, 40, 115);
+      p.background(0);
       starField.forEach( function(x,i){ 
         x.display()
          .update()
