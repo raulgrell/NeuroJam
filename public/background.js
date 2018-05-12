@@ -1,6 +1,4 @@
-
 //InitialValues;
-
 
 var maxNumberofStars = 500;
 var maxParralax = 4;
@@ -8,20 +6,13 @@ var minParralax = 0;
 var maxStarSize = 5;
 var minStarSize = 2;
 
-
-    
-
-
+var scroll = 5;
+var scrollMin = 1;
+var scrollMax = 20;
+var scrollStep = 0.1;
 
 var sketch = function(p) { 
     var gui;
-
-    
-    var scroll = 5;
-    var scrollMin = 1;
-    var scrollMax = 20;
-    var scrollStep = 0.1;
-
 
     var starField = [];
     
@@ -87,11 +78,10 @@ var sketch = function(p) {
       
       p.sliderRange(0, 90, 1);
       gui = p.createGui('Label');
-      gui.addGlobals('scroll', 'scrollStep');  
+      gui.addGlobals('scroll');  
 
       p.frameRate(50);
       starField = makeStarField(maxNumberofStars);
-      
     };
     
     p.draw = function() {

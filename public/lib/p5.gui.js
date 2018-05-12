@@ -171,8 +171,8 @@
           var vstep = object[arg + 'Step'] || object[arg + 'step'] || sliderStep;
 
           // the actual values can still overrule the limits set by magic
-          var vmin = min(val, vmin);
-          var vmax = max(val, vmax);
+          var vmin = Math.min(val, vmin);
+          var vmax = Math.max(val, vmax);
 
           // set the range
           this.bindRange(arg, vmin, vmax, val, vstep, object);
