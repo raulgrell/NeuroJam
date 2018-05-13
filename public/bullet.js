@@ -13,27 +13,34 @@ function Bullet(ix, iy) {
     this.active = false;
     this.activeTime = 0;
     this.alive = true;
+    this.rebound = false;
 
     this.update = function(deltaTime) {
-        if (this.x <= ship.x) {
-            this.x = ship.x;
+        if (this.x < ship.x) {
             this.active = true;
             if (this.active) {
                 this.activeTime += deltaTime;
                 if (this.activeTime > explosionDuration) {
-                    this.alive = false;
+                    this.active = false;
                 }
             }
-        } else {
-            this.x += this.speed * deltaTime;
+        }
+        
+        this.x += this.speed * deltaTime;
+        if (!this.rebound && this.x < 0) {
+            this.alive = false;
+            nextRound();
+        } else if (this.x > width) {
+            nextRound();
+            this.alive = false;
         }
     }
 
-    this.display = displayBullet;
+    this.display = displayLine;
 }
 
 function displayBullet() {
-    if ((millis() - this.iMillis) < (this.ttc * this.tti) * 1000) {
+    if (this.rebound || (millis() - this.iMillis) < (this.ttc * this.tti) * 1000) {
         push();
         fill(255);
         ellipse(this.x, this.y, bulletRadius, bulletRadius);
@@ -42,16 +49,16 @@ function displayBullet() {
     if (this.active) {
         push();
         fill(255, 10, 2);
-        ellipse(this.x, this.y, activeRadius + this.activeTime * 10, activeRadius + this.activeTime * 10);
+        ellipse(ship.x, ship.y, activeRadius + this.activeTime * 10, activeRadius + this.activeTime * 10);
         pop();
     }
 }
 
 function displayLine() {
-    if ((millis() - this.iMillis) < (this.ttc * this.tti) * 1000) {
+    if (this.rebound || (millis() - this.iMillis) < (this.ttc * this.tti) * 1000) {
         push();
         stroke(255);
-        line(ship.x, 0, ship.x, height);
+        line(this.x, 0, this.x, height);
         pop();
     }
     if (this.active) {

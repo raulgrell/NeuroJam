@@ -14,31 +14,48 @@
       margin: 0;
       padding: 0;
       overflow: hidden;
-      background-color: midnightblue;
+      background-color: RGB(0, 15, 0);
     }
 
     #confirm {
       margin: auto;
-      width: 45vw;
-      height: 45vh;
+      width: 10vw;
+      height: 15vh;
       border: none;
       background-color: lawngreen;
       color: black;
       text-align: center;
       text-decoration: none;
-      font-size: 10vh;
+      font-size: 5vh;
       transition: all 0.3s ease-out;
     }
 
-    .active{
-      display: none;
-    }
-
-    #confirm:hover{
+    #confirm:hover {
       background-color: orangered;
     }
+
+    #lock {
+      margin: auto;
+      width: 10vw;
+      height: 15vh;
+      border: none;
+      background-color: lawngreen;
+      color: black;
+      text-align: center;
+      text-decoration: none;
+      font-size: 3vh;
+      transition: all 0.3s ease-out;
+    }
+
+    #lock:hover {
+      background-color: orangered;
+    }
+
+    .active {
+      display: none;
+    }
   </style>
-  <script src="lib/p5.min.js"></script>
+  <script src="lib/p5.js"></script>
   <script src="lib/p5.dom.min.js"></script>
   <script src="lib/quicksettings.js"></script>
   <script src="lib/p5.gui.js"></script>
@@ -48,11 +65,10 @@
     var socket = io();
     var client = feathers().configure(feathers.socketio(socket));
     var dataService = client.service('data');
-    
+
     // dataService.on('created', function(todo) {
     //   console.log('Someone created a todo', todo);
     // });
-
   </script>
 </head>
 

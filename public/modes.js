@@ -3,6 +3,7 @@ function Hazards() {
     this.frequency = 0.5;
     this.accumulator = 0.5;
     this.timer = 0;
+    this.items = []
 
     this.activate = function(duration) {
         this.active = true;

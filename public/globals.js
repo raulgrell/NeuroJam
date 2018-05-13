@@ -3,20 +3,28 @@ var currentMillis;
 var gui, starGui, testGUI, structureGUI;
 var hide = false;
 var phase = 0;
+var textCreated = false;
+var locked = false; 
 
-var RoundsPerBlock = 10; //number of rounds the game will repeat until it returns to the parameter screen
+var RoundsPerBlock = 3; //number of rounds the game will repeat until it returns to the parameter screen
+var RoundsPerBlockMin = 1; 
+var RoundsPerBlockMax = 30; 
+var RoundsPerBlockStep = 1;
 var currentRound = 0;
 
 var initialMillisCond = 0;
 var conditioningTime = 5;
+var conditioningTimeMin = 1;
+var conditioningTimeMax = 60;
+var conditioningTimeStep = 1;
 
-var button;
+var startButton, lockButton;
 var loaded = false;
 
 //Background Starfield
 
-var comets = true;
-var rain = false;
+var directionX = true;
+var directionY = false;
 
 var scrollX = 2;
 var scrollXMin = -10;
@@ -53,6 +61,8 @@ var parralaxMaxMin = 8;
 var parralaxMaxMax = 30;
 var parralaxMaxStep = 0.1;
 
+var initialShipX = 100;
+
 // Boss
 var boss;
 
@@ -64,10 +74,31 @@ var defaultBullet = {
 var bullets = [];
 var lines = [];
 
+var projectileIndex = 0;
+var projectileFunctions = [
+    function() { return shootBullet },
+    function() { return shootLine }
+];
+
 // Ship
 var ship;
 
 // Data
 var deltaTime;
-var trials = [];
+
 var showHistory = true;
+var trials = [];
+
+var currentTrial = 0;
+var trialConditions = [
+    makeTrial(0.5, 3, 1),
+    makeTrial(0.2, 1, 2),
+    makeTrial(0.6, 2, 1),
+    makeTrial(0.4, 3, 2),
+    makeTrial(0.7, 1, 1),
+]
+
+function makeTrial(tti, ttc, shotDelay) {
+    return { tti, ttc, shotDelay }
+}
+
