@@ -29,9 +29,9 @@ function Bullet(ix, iy) {
         this.x += this.speed * deltaTime;
         if (!this.rebound && this.x < 0) {
             this.alive = false;
-            nextRound();
+            advance();
         } else if (this.x > width) {
-            nextRound();
+            advance();
             this.alive = false;
         }
     }

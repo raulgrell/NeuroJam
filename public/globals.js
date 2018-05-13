@@ -61,8 +61,6 @@ var parralaxMaxMin = 8;
 var parralaxMaxMax = 30;
 var parralaxMaxStep = 0.1;
 
-var initialShipX = 100;
-
 // Boss
 var boss;
 

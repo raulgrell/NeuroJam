@@ -16,11 +16,8 @@ function setup() {
     setFrameRate(60);
     noStroke();
 
-    
-    
-
     // Ship
-    ship = new Ship(100, height / 2, 120);
+    ship = new Ship(200, height / 2, 120);
 
     // Boss
     boss = new Boss(

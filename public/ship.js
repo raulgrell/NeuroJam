@@ -1,5 +1,5 @@
 function Ship(x, y, radius) {
-    this.x = initialShipX;
+    this.x = x;
     this.y = y;
     this.lifetime = 0;
     this.reboundTimer = 0;
@@ -81,6 +81,7 @@ function Ship(x, y, radius) {
 
     this.useShield = function () {
         if (bullets.length == 0) return;
+        if (bullets[0].rebound) return;
 
         var distance = this.x - bullets[0].x;
         var x = bullets[0].x
