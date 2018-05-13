@@ -21,60 +21,13 @@ function Boss(x, y) {
         pop();
     };
 
-    this.shoot = function () {
-        // var bulletTTC = this.ttc[Math.floor(Math.random() * this.ttc.length)];
-        // var bulletTTI = this.tti[Math.floor(Math.random() * this.tti.length)];
-        bullets.push(new Bullet(this.x, this.y, millis()));
-    };
+    this.shoot = shootBullet;
 }
 
-var bulletRadius = 25;
-var explosionRadius = 50;
-var explosionDuration = 2;
+function shootBullet() {
+    bullets.push(new Bullet(this.x, this.y, millis()));
+};
 
-class Bullet {
-    constructor(ix, iy, im) {
-        //variables
-        this.iMillis = im; //sets initial millis
-        this.x = ix; //sets initial position
-        this.y = iy; //sets initial position
-        this.ttc = defaultBullet.ttc; //time til collision
-        this.tti = defaultBullet.tti; // time til invisible
-        this.speed = (ix - ship.x) / defaultBullet.ttc;
-        this.exploded = false;
-        this.explosionTime = 0;
-        this.alive = true;
-    }
-
-    update(deltaTime) {
-        if (this.x <= ship.x) {
-            this.x = ship.x;
-            this.exploded = true;
-            if (this.exploded) {
-                this.explosionTime += deltaTime;
-                if (this.explosionTime > explosionDuration) {
-                    this.alive = false;
-                }
-            }
-        }
-        else {
-            this.x -= this.speed * deltaTime;
-        }
-    }
-
-    display() {
-        if ((millis() - this.iMillis) < (this.ttc * this.tti) * 1000) {
-            push();
-            fill(255);
-            ellipse(this.x, this.y, bulletRadius, bulletRadius);
-            pop();
-        }
-        if (this.exploded) {
-            push();
-            fill(255, 10, 2);
-            ellipse(this.x, this.y, explosionRadius + this.explosionTime * 10, explosionRadius + this.explosionTime * 10);
-            pop();
-        }
-    };
+function shootLine() {
+    lines.push(new Line(this.x, this.y));
 }
-

@@ -1,3 +1,13 @@
+var starField = [];
+
+var makeStarField = function (starcount) {
+    var out = [];
+    for (var i = 0; i < starcount; i++) {
+        out.push(new Star());
+    }
+    return out;
+};
+
 var Star = function(){
       this.vector = createVector(random(0,width), random(0,height));
       this.size = random(starSizeMin,starSizeMax);
@@ -36,11 +46,17 @@ var Star = function(){
           else if(v.y > max + height){
               v.y = -max - v.y;
           }
+          return this;
       }
 
       this.update = function()
       {
-        this.vector.x -= this.parallaxDistance * scroll;
+       if(comets){
+        this.vector.x -= this.parallaxDistance * scrollX;
+       }
+       if(rain){
+        this.vector.y += this.parallaxDistance * scrollY;
+       }
         return this;
       }; 
     };

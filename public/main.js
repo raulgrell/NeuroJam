@@ -1,19 +1,9 @@
-//InitialValues;
 
-var gui, gui2, guiTest;
-var phase = 2;
-var button;
-var loaded = false;
-
-var starField = [];
-
-var makeStarField = function (starcount) {
-    var out = [];
-    for (var i = 0; i < starcount; i++) {
-        out.push(new Star());
-    }
-    return out;
-};
+function startConditioning() {
+    button.addClass("active");
+    roundTimer = 0;
+    phase = 1;
+}
 
 function setup() {
     createCanvas(windowWidth, windowHeight);
@@ -31,61 +21,67 @@ function setup() {
     );
 
     // GUI
-    gui2 = createGui('Stars', 60, 60);
-    gui2.addGlobals('scroll', 'parralaxMax', 'parralaxMin', 'starSizeMax','starSizeMin');
+    starGui = createGui('Stars', 60, 250);
+    starGui.addGlobals('comets','rain','scrollX', 'scrollY', 'parralaxMax', 'parralaxMin', 'starSizeMax', 'starSizeMin');
 
-
-    gui = createGui('Ship', 600, 60);
-    
+    shipGui = createGui('Ship', 600, 60);
     sliderRange(50, width, 1);
-    gui.addObject(ship, 'x');
-
+    shipGui.addObject(ship, 'x');
     sliderRange(1, 10, 1);
-    gui.addObject(ship, 'rate');
+    shipGui.addObject(ship, 'rate');
 
-
-    guiTest = createGui('Bullet', 60, 400);
+    testGui = createGui('Bullet', 320, 60);
     sliderRange(1, 5, 0.5);
-    guiTest.addObject(defaultBullet, 'ttc');
-    sliderRange(0.1, 0.7, 0.05);    
-    guiTest.addObject(defaultBullet, 'tti');
+    testGui.addObject(defaultBullet, 'ttc');
+    sliderRange(0.1, 0.7, 0.05);
+    testGui.addObject(defaultBullet, 'tti');
 
+    structureGui = createGui('Structure', 60, 60);
+    sliderRange(0, 120, 5);
+    structureGui.addGlobals('RoundsPerBlock', 'conditioningTime');
+    
     button = createButton('Confirm Parameters').id('confirm');
     button.position(window.innerWidth / 2, window.innerHeight / 2);
     button.mousePressed(startConditioning);
 
     currentMillis = millis();
-
 };
 
-function startConditioning() {
-    button.addClass("active");
-    phase = '1';
-}
+var roundTimer = 0;
 
 function draw() {
     var newMillis = millis();
-    var deltaTime = (newMillis - currentMillis) / 1000;
+    deltaTime = (newMillis - currentMillis) / 1000;
     currentMillis = newMillis;
 
-    background(0);
+    if (phase == 1 && roundTimer > conditioningTime)
+    {
+        phase = 2;
+    }
 
     switch (phase) {
-        case '0':
+        case 0:
             // Sliders
+     
+            background(15, 0, 0);
             break;
-        case '1':
+        case 1:
             //Conditioning
-            if(!loaded){
+            hide = true;
+            GUI();
+            background(0, 15, 0);
+            if (!loaded) {
                 starField = makeStarField(maxNumberofStars);
                 loaded = true;
             }
             starField.forEach(function (x, i) {
                 x.display().update().repeat();
             });
+            roundTimer += deltaTime;
             break;
-        case '2':
+        case 2:
             //Test
+            background(0, 15, 0);
             push();
             stroke(255);
             line(ship.x, 0, ship.x, height);
@@ -96,30 +92,41 @@ function draw() {
             for (var i = bullets.length - 1; i >= 0; i--) {
                 bullets[i].update(deltaTime);
                 bullets[i].display();
-            }
-
-            for (var i = bullets.length - 1; i >= 0; i--) {
-                if(!bullets[i].alive) {
+                if (!bullets[i].alive) {
                     bullets.splice(i, 1);
                 }
             }
-
-            starField.forEach(function (x, i) {
-                x.display()
-                    .update()
-                    .repeat();
-            });
-
-            ship.update(deltaTime);
-            ship.display();
+            roundTimer += deltaTime;            
             break;
     }
+
+    if (showHistory) showTrials();
+
+    ship.update(deltaTime);
+    ship.display();
 };
 
+function GUI(){
+    if(hide){
+        starGui.hide();
+        shipGui.hide();
+        testGui.hide();
+        structureGui.hide();
+    }
+    if(!hide){
+        starGui.show();
+        shipGui.show();
+        testGui.show();
+        structureGui.show();
+    }
+}
+
 function mousePressed() {
-    if (mouseButton == LEFT) {
-        if (bullet) {
-            ship.useShield();
+    if (phase == 2) {
+        if (mouseButton == LEFT) {
+            if (bullets.length > 0) {
+                ship.useShield();
+            }
         }
     }
 }
@@ -130,7 +137,16 @@ function keyPressed() {
     } else if (keyCode == CONTROL) {
         shot = false;
     } else if (key >= '0' && key <= '9') {
-        phase = key;
+        phase = parseInt(key, 10);
         console.log("phase: " + phase);
+    }
+}
+
+function showTrials() {
+    for (var i = 0; i < trials.length; i++) {
+        push();
+        stroke(255);
+        line(trials[i].x, 0, trials[i].x, height);
+        pop();
     }
 }
